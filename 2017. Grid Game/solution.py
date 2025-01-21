@@ -1,25 +1,18 @@
 from typing import List
-from collections import defaultdict
 
 
 class Solution:
-    def firstCompleteIndex(self, arr: List[int], mat: List[List[int]]) -> int:
-        n = len(mat)
-        m = len(mat[0])
-        coordinates = {}
+    def gridGame(self, grid: List[List[int]]) -> int:
+        first = sum(grid[0]) - grid[0][0] 
+        second = 0
 
-        for i in range(n):
-            for j in range(m):
-                coordinates[mat[i][j]] = (i, j)
+        robot1 = 0
+        robot2 = first
 
-        rows = defaultdict(int)
-        cols = defaultdict(int)
-        for i in range(len(arr)):
-            mat_i, mat_j = coordinates[arr[i]]
-            rows[mat_i] += 1
-            cols[mat_j] += 1
-            if rows[mat_i] == m or cols[mat_j] == n:
-                return i
+        for i in range(1, len(grid[0])):
+            first -= grid[0][i]
+            second += grid[1][i - 1]
 
-        return -1
-    
+            robot1 = max(first, second)
+            robot2 = min(robot2, robot1)
+        return robot2
