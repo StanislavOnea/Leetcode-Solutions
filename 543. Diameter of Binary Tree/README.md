@@ -1,37 +1,37 @@
 # Intuition
-We should find for every cell distances for the nearest "water cell".
-# Approach
-Use bfs starting with each water cell and update the distance.
+Use dfs and keep max dpeth of left and right.
 
 # Complexity
 - Time complexity:
-O(nm) - we should modify every cell
+O(n)
 
 - Space complexity:
-O(nm) - the size of the deque in wors case.
+O(n)
 
 # Code
 ```python3 []
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
 class Solution:
-    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
-        n = len(mat)
-        m = len(mat[0])
-        ans = [[-1 for _ in range(m)] for _ in range(n)]
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        max_diameter = 0
+        def dfs(node):
+            nonlocal max_diameter
+            if not node:
+                return 0
 
-        q = deque()
-        for i in range(n):
-            for j in range(m):
-                if mat[i][j] == 0:
-                    ans[i][j] = 0
-                    q.append((i, j))
+            left = dfs(node.left)
+            right = dfs(node.right)
 
-        while q:
-            i, j = q.popleft()
-            for ni, nj in [(i+1,j), (i-1,j), (i,j+1), (i,j-1)]:
-                if 0 <= ni < n and 0 <= nj < m and ans[ni][nj] == -1:
-                    ans[ni][nj] = ans[i][j] + 1
-                    q.append((ni, nj))
-                    
-        return ans
-           
+            max_diameter = max(max_diameter, left + right)
+            
+            return 1 + max(left, right)
+
+        dfs(root)
+        return max_diameter
+
 ```
