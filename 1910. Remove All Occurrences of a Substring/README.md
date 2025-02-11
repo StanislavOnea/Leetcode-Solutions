@@ -1,33 +1,48 @@
 # Intuition
-First I thought to use DFS and just find the largest path and set values from path to 0. But after I understood that it can be solved with greedy min max aproach.
-
+- Aproach 1: Ituition was to use something like a stack but with faster equal check so firstly I thought tho just construct the string and remove from it when we find part.
+- Aproach 2: Is to use replace function and do so while we can find the "part" ins string.
 # Approach
-We can see that the second robot will be able to choose between the upper right maximum values ​​or the lower left values, because at some point the first robot should turn once and then stop.
-Using the prefix sums of each robot2 cell, the minimum of the first robot's choices will be chosen (since it will choose the highest ones).
+- Aproach 1: Declare intial string, add char by char and check last len(part) substring if it matches with part delete it and continue assembling the string.
+- Aproach 2: Check while part is in s then replace directly in string the part with "" (1 at a time). Do so until no part in s.
 
 # Complexity
 - Time complexity:
-O(n) where n is number of columns.
+- Aproach 1: O(N * M) where n is len of s and m len of part.
+- Aproach 2: O(N * M)
 
 - Space complexity:
-O(1) - we dont need to store a array of sums.
+- Aproach 1: O(N) since we store additional string.
+- Aproach 2: O(1) we use input string for replacing so its constant time.
 
 # Code
+```python3  []
+class Solution:
+    def removeOccurrences(self, s: str, part: str) -> str:
+        part_len = len(part)
+        j = 0
+
+        curr = ""
+        for i in range(len(s)):
+            
+            curr += s[i]
+            j += 1
+
+            if j - part_len >= 0 and curr[j - part_len:] == part:
+                curr = curr[:j - part_len]
+                j = j - part_len
+
+        if curr == part:
+            return ""
+        return curr
+```
+
+
 ```python3 []
 class Solution:
-    def gridGame(self, grid: List[List[int]]) -> int:
-        first = sum(grid[0]) - grid[0][0] 
-        second = 0
-
-        robot1 = 0
-        robot2 = first
-
-        for i in range(1, len(grid[0])):
-            first -= grid[0][i]
-            second += grid[1][i - 1]
-
-            robot1 = max(first, second)
-            robot2 = min(robot2, robot1)
-        return robot2
+    def removeOccurrences(self, s: str, part: str) -> str:
+        while part in s:
+            s = s.replace(part, "",1)
+        return s
 
 ```
+
