@@ -2,12 +2,26 @@ from typing import List
 
 
 class Solution:
-    def maximumCount(self, nums: List[int]) -> int:
-        neg = 0
-        pos = 0
-        for num in nums:
-            if num < 0:
-                neg += 1
-            elif num > 0:
-                pos += 1
-        return max(pos, neg)
+    def maximumCandies(self, candies: List[int], k: int) -> int:
+        def nr_of_piles(n):
+            res = 0
+            for candy in candies:
+                res += candy // n
+            return res              
+
+        sum_candy = sum(candies)
+        if sum_candy < k:
+            return 0
+        r = sum_candy // k
+        l = 1
+
+        while l <= r:
+            mid = (l + r) // 2
+            piles = nr_of_piles(mid)
+
+            if piles >= k:
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        return r
