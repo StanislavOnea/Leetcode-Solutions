@@ -36,3 +36,18 @@ class Solution:
             tmp.next = ListNode(val=addition)
         return ans.next
 
+def find_largest_less_than(arr, x):
+    left, right = 0, len(arr) - 1
+    best_index = -1  # Default to -1 if no valid index is found
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if arr[mid] < x:
+            best_index = mid  # Update best candidate
+            left = mid + 1  # Search right half
+        else:
+            right = mid - 1  # Search left half
+
+    return best_index
+print(find_largest_less_than([1,2,3,6,6,7,8,9, 10], 6))
